@@ -1,55 +1,56 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using UserInfromationAPI.DAL;
 using UserInfromationAPI.Models;
+using UserInfromationAPI.Validator;
 
 namespace UserInfromationAPI.Controllers
 {
-    
-    [Route("api/[controller]")]
+    [Route("api/users")]
 
     public class UserController : Controller
     {
-        private readonly IUserInformation _userInformation;
+        private readonly IUserData _userInformation;
 
-        public UserController(IUserInformation userInformation)
+        public UserController(IUserData userInformation)
         {
             _userInformation = userInformation;
         }
-        
 
         [HttpPost]
-        [Route("add")]
-        public JsonResult AddUser([FromBody]User user)
+        public JsonResult AddUser([FromBody]User user= null)
         {
-           // Console.WriteLine(user.Address.Pincode);
             try
             {
-                if (ModelState.IsValid)
+                var validator = new UserValidator();
+                var results = validator.Validate(user);
+                if (results.IsValid)
+                {
                     return Json(new { status = "Success", message = _userInformation.AddUser(user) });
+                }
                 else
-                    throw new Exception("Please enter valid input.");
-                
+                {
+                    var error = results.Errors.Aggregate("", (current, failure) => current + failure.ErrorMessage);
+                    throw new Exception(error);
+                }
             }
             catch (Exception ex)
             {
                 return Json(new { status = "error", message = ex.Message });
             }
-            
         }
 
         [HttpGet]
-        [Route("get/{ID?}")]
-        public JsonResult GetUser(int? ID)
-        {
-            //string userList = JsonSerializer.Serialize(_userInformation.GetAllUser(ID));
+        [Route("{id?}")]
+        public JsonResult GetUser(int? id)
+        {            
             try
             {
-                var result = _userInformation.GetAllUser(ID);
-                if (result == null)
-                {
-                    return Json(new { status = "Success", message = "user does not exist." });
-                }
-                return Json(new { status = "Success", message = result});
+                var result = _userInformation.GetAllUser(id);
+                return result == null
+                    ? Json(new {status = "Success", message = "user does not exist."})
+                    : Json(new {status = "Success", message = result});
             }
             catch (Exception ex)
             {
@@ -58,44 +59,33 @@ namespace UserInfromationAPI.Controllers
         }
 
         [HttpPut]
-        [Route("update/{ID}")]
-        public JsonResult UpdateUser(int ID, [FromBody]User user)
+        [Route("{id}")]
+        public JsonResult UpdateUser(int id, [FromBody]User user)
         {
-
             try
             {
-                if (ID <= 0)
-                {
-                    return Json(new { status = "Error", message = "Please provide valid ID" });
-                }
-                if (user == null)
-                {
-                    return Json(new { status = "Success", message = "Nothing to update" });
-                }
-                return Json(new { status = "Success", message = _userInformation.UpdateUser(ID, user) });
+                return id <= 0
+                    ? Json(new {status = "Error", message = "Please provide valid ID"})
+                    : Json(user is null
+                        ? new {status = "Success", message = "Nothing to update"}
+                        : new {status = "Success", message = _userInformation.UpdateUser(id, user)});
             }
             catch (Exception ex)
             {
-
                 return Json(new { status = "error", message = ex.Message });
             }
         }
 
         [HttpDelete]
-        [Route("delete/{ID}")]
-        public JsonResult DeleteUser(int ID)
+        [Route("{id}")]
+        public JsonResult DeleteUser(int id)
         {
             try
             {
-                if (ID <= 0)
-                {
-                    return Json(new { status = "Error", message = "Please provide valid ID" });
-                }
-                return Json(new { status = "Success", message = _userInformation.DeleteUser(ID) });
+                return Json(id <= 0 ? new { status = "Error", message = "Please provide valid ID" } : new { status = "Success", message = _userInformation.DeleteUser(id) });
             }
             catch (Exception ex)
             {
-
                 return Json(new { status = "error", message = ex.Message });
             }
         }

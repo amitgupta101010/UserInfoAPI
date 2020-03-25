@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInfromationAPI\\UserInfromationAPI.csproj": {}
+    "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInformationAPI\\UserInfromationAPI.csproj": {}
   },
   "projects": {
-    "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInfromationAPI\\UserInfromationAPI.csproj": {
+    "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInformationAPI\\UserInfromationAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInfromationAPI\\UserInfromationAPI.csproj",
+        "projectUniqueName": "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInformationAPI\\UserInfromationAPI.csproj",
         "projectName": "UserInfromationAPI",
-        "projectPath": "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInfromationAPI\\UserInfromationAPI.csproj",
+        "projectPath": "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInformationAPI\\UserInfromationAPI.csproj",
         "packagesPath": "C:\\Users\\AmKumar\\.nuget\\packages\\",
-        "outputPath": "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInfromationAPI\\obj\\",
+        "outputPath": "C:\\WGC-Dot-Net\\ASPDotNetWebApplicationPractice\\UserInformationAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\AmKumar\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,6 +38,10 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[8.6.2, )"
+            },
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.1, )"
