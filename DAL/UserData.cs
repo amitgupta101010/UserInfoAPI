@@ -184,7 +184,6 @@ namespace UserInfromationAPI.DAL
                 {
                     return "Not data available to update.";
                 }
-
                 if (UserExist(id))
                 {
                     var updateQuery = new StringBuilder("update UserInfo SET ");

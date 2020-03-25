@@ -19,14 +19,14 @@ namespace UserInfromationAPI.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddUser([FromBody]User user= null)
+        public JsonResult AddUser([FromBody]User user)
         {
             try
             {
                 var validator = new UserValidator();
                 var results = validator.Validate(user);
                 if (results.IsValid)
-                {
+                { 
                     return Json(new { status = "Success", message = _userInformation.AddUser(user) });
                 }
                 else
@@ -42,8 +42,7 @@ namespace UserInfromationAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id?}")]
-        public JsonResult GetUser(int? id)
+        public JsonResult GetUser([FromQuery]int? id)
         {            
             try
             {
