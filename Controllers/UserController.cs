@@ -8,7 +8,7 @@ using UserInfromationAPI.Validator;
 namespace UserInfromationAPI.Controllers
 {
     [Route("api/users")]
-
+    [ApiController]
     public class UserController : Controller
     {
         private readonly IUserData _userInformation;

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
 using UserInfromationAPI.DAL;
 
 namespace UserInfromationAPI
@@ -12,8 +11,7 @@ namespace UserInfromationAPI
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(option => option.EnableEndpointRouting = false);
-            // Dependency Injection.
+            services.AddControllers();
             services.AddSingleton<IUserData, UserData>();
             services.AddSwaggerGen(c =>
             {
@@ -38,17 +36,17 @@ namespace UserInfromationAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwagger();
+            app.UseRouting();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseMvc();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "User API");
                 c.RoutePrefix = string.Empty;
             });
-            
+            app.UseEndpoints(endpoint => endpoint.MapControllers());
         }
     }
 }
